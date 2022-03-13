@@ -5,6 +5,7 @@ services:
   app:
     build:
       context: node
+      dockerfile: Dockerfile.prod
     container_name: app
     entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh node index.js
     networks:
@@ -31,6 +32,18 @@ services:
     networks:
       - node-network
 
+  nginx:
+    build:
+      context: nginx
+      dockerfile: Dockerfile.prod
+    container_name: nginx
+    restart: always
+    tty: true
+    networks:
+      - node-network
+    ports:
+      - "80:80"
+    
 networks:
   node-network:
     driver: bridge
