@@ -15,11 +15,6 @@ app.get('/', (req, res) => {
     //res.send("<h1>Full Cycle Rocks!</h1><br>")
 
     const connection = mysql.createConnection(config);
-
-    const createTable = `create table IF NOT EXISTS people(id int not null auto_increment, name varchar(255), primary key(id)) `;
-    connection.query(createTable)
-    
-    
     const sql = `INSERT INTO people(name) values ('Edgar Freitas')`;
     connection.query(sql)
 
@@ -38,6 +33,14 @@ app.get('/', (req, res) => {
 
 })
 
-app.listen(port, () => {
-    console.log("Rodando na porta "+port)
+const connection = mysql.createConnection(config);
+
+const createTable = `create table IF NOT EXISTS people(id int not null auto_increment, name varchar(255), primary key(id)) `;
+connection.query(createTable,  (err, result) => {
+    console.log("Tabela criada")
+    app.listen(port, () => {
+        console.log("Rodando na porta "+port)
+    })
 })
+
+
